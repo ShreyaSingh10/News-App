@@ -22,12 +22,13 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class QueryUtils {
 
     public static String LOG_TAG = QueryUtils.class.getSimpleName();
-    static String mainURL = "http://content.guardianapis.com/search?";
+    static String mainURL = "http://content.guardianapis.com/search?api-key=test";
 
     public static List<News> fetchNewsData() {
 
@@ -84,7 +85,7 @@ public class QueryUtils {
                 Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the News JSON results.", e);
+            Log.e(LOG_TAG, "Problem Retrieving the News JSON results.", e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -93,6 +94,7 @@ public class QueryUtils {
                 inputStream.close();
             }
         }
+        Log.e(LOG_TAG, jsonResponse);
         return jsonResponse;
     }
 
@@ -125,7 +127,7 @@ public class QueryUtils {
             // so i won't defer its handling by writing 'throws Exception' after the method signature. Better handle this type of exception here in the same code block like in createUrl() I have handled
 
             int count = baseJsonResponse.getInt("total");
-            if (count == 0) {  //if total items is 0 means no book found
+            if (count == 0) {  //if total items is 0 means no news found
                 return null;
             }
 
@@ -144,7 +146,7 @@ public class QueryUtils {
 
             }
         } catch (JSONException e) {
-            Log.e(LOG_TAG, "Problem parsing the Book JSON results", e);
+            Log.e(LOG_TAG, "Problem parsing the News JSON results", e);
         }
         return newsList;
     }
